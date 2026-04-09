@@ -4,19 +4,25 @@ import { UsuarioController } from './app.controller';
 import { UsuarioService } from './app.service';
 import { User } from './entities/user.entity';
 import { TelefonoController } from './telefono.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '2020',
-      database: 'tresa',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT || '3306'),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [User],
       synchronize: true,
     }),
+
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UsuarioController, TelefonoController],

@@ -12,7 +12,7 @@ import { TelefonoController } from './telefono.controller';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: '2020',
       database: 'tresa',
       entities: [User],
       synchronize: true,

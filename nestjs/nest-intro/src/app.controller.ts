@@ -1,45 +1,30 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, Param } from '@nestjs/common';
 import { UsuarioService } from './app.service';
-import type { User } from './entities/user.entity';
+import { User } from './entities/user.entity';
 
-// http://localhost:3000/usuarios
-
-// useEffect(() => {
-//     fetch('http://localhost:3000/usuarios',{
-//       method: 'POST'
-//     })
-//     .then(response => response.json())
-//     .then(data =>console.log(data))
-//     .catch(error => console.error(error));
-// }, []);
-
-
-@Controller('/usuarios')
+@Controller('usuarios')
 export class UsuarioController {
-  
-  private readonly usuarioService: UsuarioService;
+  constructor(private readonly usuarioService: UsuarioService) {}
 
-  constructor(usuarioService: UsuarioService) {
-    this.usuarioService = usuarioService;
+  @Get()
+  getAll() {
+    return this.usuarioService.findAll();
   }
 
-  @Get()//obtener
-  getHelloController(): Promise<User[]> {
-    return this.usuarioService.getHelloService();
+  @Post()
+  create(@Body() user: User) {
+    return this.usuarioService.create(user);
   }
 
-  @Post()//agregar
-  postHelloController(@Body() newUser: User): Promise<string> {
-    return this.usuarioService.postHelloService(newUser);
-  }
+ 
 
-  @Delete()//eliminar
-  deleteHelloController(idUser: number): string {
-    return this.usuarioService.deleteHelloService(idUser);
-  }
+@Delete(':id')
+deleteHelloController(@Param('id') id: number) {
+  return this.usuarioService.remove(Number(id));
+}
 
-  @Put()//modificar
-  putHelloController(updateUser: User): string {
-    return this.usuarioService.putHelloService(updateUser);
+  @Put()
+  update(@Body() user: User) {
+    return this.usuarioService.update(user);
   }
 }
